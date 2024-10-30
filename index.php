@@ -1,4 +1,4 @@
-<?php include 'conexion.php'; ?>
+<?php include 'conexion.php'; session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,6 +9,17 @@
 </head>
 <body>
     <h1>Agenda de Contactos</h1>
+
+    
+    <?php if (isset($_SESSION['message'])): ?>
+        <div class="alert" id="alert-message">
+            <?php
+            echo $_SESSION['message'];
+            unset($_SESSION['message']);
+            ?>
+        </div>
+    <?php endif; ?>
+
     <div class="formulario">
         <form id="contact-form" action="procesos.php" method="POST">
             <input type="text" name="nombre" placeholder="Nombre" required>
@@ -36,7 +47,7 @@
                     echo "<td>" . htmlspecialchars($row['email']) . "</td>";
                     echo "<td>
                             <a href='editar.php?id=" . $row['id'] . "'>Modificar</a> | 
-                            <a href='procesos.php?eliminar=" . $row['id'] . "'>Eliminar</a>
+                            <a href='procesos.php?eliminar=" . $row['id'] . "' onclick='return confirm(\"¿Estás seguro de que deseas eliminar este contacto?\");'>Eliminar</a>
                           </td>";
                     echo "</tr>";
                 }
@@ -45,5 +56,14 @@
         </table>
     </div>
     <script src="script.js"></script>
+    <script>
+        // Desaparecer el mensaje después de 2 segundos
+        setTimeout(function() {
+            const alertMessage = document.getElementById('alert-message');
+            if (alertMessage) {
+                alertMessage.style.display = 'none';
+            }
+        }, 2000);
+    </script>
 </body>
 </html>
