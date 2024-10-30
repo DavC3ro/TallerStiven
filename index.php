@@ -34,7 +34,10 @@
                     echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['telefono']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['email']) . "</td>";
-                    echo "<td><a href='procesos.php?eliminar=" . $row['id'] . "'>Eliminar</a></td>";
+                    echo "<td>
+                            <a href='editar.php?id=" . $row['id'] . "'>Modificar</a> | 
+                            <a href='procesos.php?eliminar=" . $row['id'] . "'>Eliminar</a>
+                          </td>";
                     echo "</tr>";
                 }
                 $conn->close();
