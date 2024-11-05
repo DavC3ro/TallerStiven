@@ -1,7 +1,7 @@
 <?php 
 include 'conexion.php'; 
 
-// Obtener el contacto a editar
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $result = $conn->query("SELECT * FROM contactos WHERE id = $id");

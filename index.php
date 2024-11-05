@@ -13,9 +13,16 @@ include 'conexion.php';
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    
+    <div id="particles-js"></div>
+
+    <div class="count-particles">
+        <span class="js-count-particles">--</span> particles
+    </div>
+
     <h1>Agenda de Contactos</h1>
 
-    <!-- Mostrar mensajes de sesión -->
+  
     <?php if (isset($_SESSION['message'])): ?>
         <div class="alert" id="alert-message">
             <?php
@@ -62,15 +69,39 @@ include 'conexion.php';
         </table>
     </div>
 
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/lib/stats.js"></script>
     <script src="script.js"></script>
+
     <script>
-        
         setTimeout(function() {
             const alertMessage = document.getElementById('alert-message');
             if (alertMessage) {
                 alertMessage.style.display = 'none';
             }
         }, 2000);
+
+        
+        var count_particles, stats, update;
+        stats = new Stats();
+        stats.setMode(0);
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = '0px';
+        stats.domElement.style.top = '0px';
+        document.body.appendChild(stats.domElement);
+
+        count_particles = document.querySelector('.js-count-particles');
+        update = function() {
+            stats.begin();
+            stats.end();
+            if (window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS.particles.array) {
+                count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+            }
+            requestAnimationFrame(update);
+        };
+        requestAnimationFrame(update);
     </script>
 </body>
 </html>

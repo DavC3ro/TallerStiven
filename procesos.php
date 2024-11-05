@@ -7,14 +7,21 @@ if (isset($_POST['agregar'])) {
     $telefono = $_POST['telefono'];
     $email = $_POST['email'];
 
-    // Validar que el correo electrónico contenga '@'
-    if (strpos($email, '@') === false) {
-        $_SESSION['message'] = "El correo electrónico debe contener un '@'.";
+  
+    $allowed_domains = "/@(?:gmail\.com|hotmail\.com|yahoo\.com|outlook\.com|icloud\.com|live\.com)$/";
+    if (!preg_match($allowed_domains, $email)) {
+        $_SESSION['message'] = "El correo electrónico debe terminar en @gmail.com, @hotmail.com, @yahoo.com, @outlook.com, @icloud.com o @live.com.";
         header('Location: index.php');
         exit();
     }
 
-    // Usar sentencias preparadas para evitar inyecciones SQL
+    
+    if (!ctype_digit($telefono)) {
+        $_SESSION['message'] = "El teléfono solo debe contener números.";
+        header('Location: index.php');
+        exit();
+    }
+
     $stmt = $conn->prepare("INSERT INTO contactos (nombre, telefono, email) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $nombre, $telefono, $email);
     
@@ -31,7 +38,7 @@ if (isset($_POST['agregar'])) {
 
 if (isset($_GET['eliminar'])) {
     $id = $_GET['eliminar'];
-    // Usar una sentencia preparada para eliminar
+   
     $stmt = $conn->prepare("DELETE FROM contactos WHERE id = ?");
     $stmt->bind_param("i", $id);
     
@@ -52,14 +59,21 @@ if (isset($_POST['modificar'])) {
     $telefono = $_POST['telefono'];
     $email = $_POST['email'];
 
-    // Validar que el correo electrónico contenga '@'
-    if (strpos($email, '@') === false) {
-        $_SESSION['message'] = "El correo electrónico debe contener un '@'.";
+    
+    if (!preg_match($allowed_domains, $email)) {
+        $_SESSION['message'] = "El correo electrónico debe terminar en @gmail.com, @hotmail.com, @yahoo.com, @outlook.com, @icloud.com o @live.com.";
         header('Location: index.php');
         exit();
     }
 
-    // Usar una sentencia preparada para modificar
+   
+    if (!ctype_digit($telefono)) {
+        $_SESSION['message'] = "El teléfono solo debe contener números.";
+        header('Location: index.php');
+        exit();
+    }
+
+  
     $stmt = $conn->prepare("UPDATE contactos SET nombre = ?, telefono = ?, email = ? WHERE id = ?");
     $stmt->bind_param("sssi", $nombre, $telefono, $email, $id);
     
