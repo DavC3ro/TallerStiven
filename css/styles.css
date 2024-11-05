@@ -57,6 +57,40 @@ body {
     background-color: #1a1a1a;
 }
 
+.buscador {
+    display: flex;                  
+    justify-content: center;        
+    align-items: center;            
+    margin: 20px 0;                
+}
+
+.buscador form {
+    display: flex;                  
+    width: 100%;                    
+    max-width: 600px;              
+}
+
+.buscador input[type="text"] {
+    flex: 1;                        
+    padding: 10px;                 
+    border: 1px solid #ccc;        
+    border-radius: 5px;            
+}
+
+.buscador button {
+    padding: 10px 15px;            
+    border: none;                  
+    background-color: #007bff;    
+    color: white;                  
+    border-radius: 5px;            
+    cursor: pointer;               
+    margin-left: 10px;             
+}
+
+.buscador button:hover {
+    background-color: #0056b3;     
+}
+
 /* Contenedor de contenido */
 .contenedor {
     width: 80%;

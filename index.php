@@ -11,18 +11,46 @@ include 'conexion.php';
     <title>Agenda de Contactos</title>
     <link rel="stylesheet" href="./css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .buscador {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .buscador form {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .buscador input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .buscador button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .buscador button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    
+
     <div id="particles-js"></div>
-
-    <div class="count-particles">
-        <span class="js-count-particles">--</span> particles
-    </div>
-
     <h1>Agenda de Contactos</h1>
 
-  
     <?php if (isset($_SESSION['message'])): ?>
         <div class="alert" id="alert-message">
             <?php
@@ -42,6 +70,14 @@ include 'conexion.php';
     </div>
 
     <div class="contenedor">
+        <!-- Buscador integrado con la lista de contactos -->
+        <div class="buscador">
+            <form action="index.php" method="POST">
+                <input type="text" name="search_term" placeholder="Buscar por nombre, teléfono o email" value="<?php if (isset($_POST['search_term'])) echo htmlspecialchars($_POST['search_term']); ?>">
+                <button type="submit" name="search" class="boton">Buscar</button>
+            </form>
+        </div>
+
         <h2>Lista de Contactos</h2>
         <table>
             <tr>
@@ -51,8 +87,21 @@ include 'conexion.php';
                 <th>Acciones</th>
             </tr>
             <?php
-                $result = $conn->query("SELECT * FROM contactos");
+                // Aquí gestionamos la búsqueda si se ha enviado el formulario
+                if (isset($_POST['search']) && !empty($_POST['search_term'])) {
+                    $search_term = $_POST['search_term'];
+                    // Usar consulta preparada para la búsqueda
+                    $stmt = $conn->prepare("SELECT * FROM contactos WHERE nombre LIKE ? OR telefono LIKE ? OR email LIKE ?");
+                    $search_term_wildcard = "%" . $search_term . "%";
+                    $stmt->bind_param("sss", $search_term_wildcard, $search_term_wildcard, $search_term_wildcard);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                } else {
+                    // Si no se ha buscado, mostrar todos los contactos
+                    $result = $conn->query("SELECT * FROM contactos");
+                }
 
+                // Mostrar los resultados de la búsqueda o todos los contactos
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
@@ -64,12 +113,16 @@ include 'conexion.php';
                           </td>";
                     echo "</tr>";
                 }
+
+                // Cerrar la conexión de la base de datos
+                if (isset($stmt)) {
+                    $stmt->close();
+                }
                 $conn->close();
             ?>
         </table>
     </div>
 
-    
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="js/app.js"></script>
     <script src="js/lib/stats.js"></script>
@@ -82,26 +135,6 @@ include 'conexion.php';
                 alertMessage.style.display = 'none';
             }
         }, 2000);
-
-        
-        var count_particles, stats, update;
-        stats = new Stats();
-        stats.setMode(0);
-        stats.domElement.style.position = 'absolute';
-        stats.domElement.style.left = '0px';
-        stats.domElement.style.top = '0px';
-        document.body.appendChild(stats.domElement);
-
-        count_particles = document.querySelector('.js-count-particles');
-        update = function() {
-            stats.begin();
-            stats.end();
-            if (window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS.particles.array) {
-                count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
-            }
-            requestAnimationFrame(update);
-        };
-        requestAnimationFrame(update);
     </script>
 </body>
 </html>
