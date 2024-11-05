@@ -1,4 +1,8 @@
-<?php include 'conexion.php'; session_start(); ?>
+<?php
+session_start();
+include 'conexion.php';
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,11 +10,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda de Contactos</title>
     <link rel="stylesheet" href="./css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <h1>Agenda de Contactos</h1>
 
-    
+    <!-- Mostrar mensajes de sesión -->
     <?php if (isset($_SESSION['message'])): ?>
         <div class="alert" id="alert-message">
             <?php
@@ -20,15 +25,16 @@
         </div>
     <?php endif; ?>
 
-    <div class="formulario">
+    <div class="contenedor">
         <form id="contact-form" action="procesos.php" method="POST">
             <input type="text" name="nombre" placeholder="Nombre" required>
             <input type="text" name="telefono" placeholder="Teléfono" required>
             <input type="email" name="email" placeholder="Correo Electrónico" required>
-            <button type="submit" name="agregar">Agregar Contacto</button>
+            <button type="submit" name="agregar" class="boton">Agregar Contacto</button>
         </form>
     </div>
-    <div class="contact-list">
+
+    <div class="contenedor">
         <h2>Lista de Contactos</h2>
         <table>
             <tr>
@@ -46,8 +52,8 @@
                     echo "<td>" . htmlspecialchars($row['telefono']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['email']) . "</td>";
                     echo "<td>
-                            <a href='editar.php?id=" . $row['id'] . "'>Modificar</a> | 
-                            <a href='procesos.php?eliminar=" . $row['id'] . "' onclick='return confirm(\"¿Estás seguro de que deseas eliminar este contacto?\");'>Eliminar</a>
+                            <a href='editar.php?id=" . $row['id'] . "' class='boton'>Modificar</a> | 
+                            <a href='procesos.php?eliminar=" . $row['id'] . "' onclick='return confirm(\"¿Estás seguro de que deseas eliminar este contacto?\");' class='boton'>Eliminar</a>
                           </td>";
                     echo "</tr>";
                 }
@@ -55,6 +61,7 @@
             ?>
         </table>
     </div>
+
     <script src="script.js"></script>
     <script>
         // Desaparecer el mensaje después de 2 segundos

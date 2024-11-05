@@ -1,73 +1,78 @@
+/* Fondo animado */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(115deg, rgba(58, 94, 122, 0.8), rgba(29, 63, 87, 0.9));
+    background-size: 200% 200%;
+    animation: fondoMovimiento 10s ease infinite;
+    color: #E0E0E0;
+    overflow: hidden;
 }
 
-h1 {
-    color: #333;
+@keyframes fondoMovimiento {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-.formulario, .contact-list {
+/* Tarjeta o contenedor con efecto futurista */
+.contenedor {
     width: 80%;
     max-width: 600px;
-    margin: 20px 0;
-    background: #fff;
+    margin: 50px auto;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: rgba(20, 29, 38, 0.8);
+    border: 2px solid #00FFF7;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 255, 247, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-input[type="text"], input[type="email"] {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.contenedor:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 255, 247, 0.5);
 }
 
-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+/* Títulos y texto */
+h1, h2 {
+    color: #00FFF7;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
-button:hover {
-    background-color: #45a049;
+p {
+    color: #B0C4DE;
+    line-height: 1.6;
+    text-align: justify;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-a {
-    color: #d9534f;
+/* Botón futurista */
+.boton {
+    display: inline-block;
+    padding: 10px 30px;
+    margin: 20px auto;
+    color: #00FFF7;
+    font-weight: bold;
     text-decoration: none;
+    border: 2px solid #00FFF7;
+    border-radius: 50px;
+    background: rgba(20, 29, 38, 0.8);
+    transition: background 0.3s ease, transform 0.3s ease;
 }
 
-a:hover {
-    text-decoration: underline;
+.boton:hover {
+    background: #00FFF7;
+    color: #131921;
+    transform: scale(1.1);
 }
 
+/* Estilos para la alerta */
 .alert {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid #c3e6cb;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    padding: 10px;
     border-radius: 5px;
+    margin-bottom: 20px;
 }
-

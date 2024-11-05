@@ -1,6 +1,6 @@
-<?php include 'conexion.php'; ?>
+<?php 
+include 'conexion.php'; 
 
-<?php
 // Obtener el contacto a editar
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -33,6 +33,7 @@ if (isset($_GET['id'])) {
         <input type="text" name="nombre" value="<?php echo htmlspecialchars($contacto['nombre']); ?>" required>
         <input type="text" name="telefono" value="<?php echo htmlspecialchars($contacto['telefono']); ?>" required>
         <input type="email" name="email" value="<?php echo htmlspecialchars($contacto['email']); ?>" required>
+        <p style="color: red;">* Asegúrate de que el correo electrónico contenga un '@'</p>
         <button type="submit" name="modificar">Modificar Contacto</button>
     </form>
     <a href="index.php">Cancelar</a>

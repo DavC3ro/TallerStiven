@@ -2,35 +2,49 @@
 session_start(); 
 include 'conexion.php';
 
-
 if (isset($_POST['agregar'])) {
     $nombre = $_POST['nombre'];
     $telefono = $_POST['telefono'];
     $email = $_POST['email'];
 
-    $sql = "INSERT INTO contactos (nombre, telefono, email) VALUES ('$nombre', '$telefono', '$email')";
-    if ($conn->query($sql) === TRUE) {
-        $_SESSION['message'] = "Contacto añadido correctamente.";
-        header("Location: index.php");
+    // Validar que el correo electrónico contenga '@'
+    if (strpos($email, '@') === false) {
+        $_SESSION['message'] = "El correo electrónico debe contener un '@'.";
+        header('Location: index.php');
         exit();
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
     }
-}
 
+    // Usar sentencias preparadas para evitar inyecciones SQL
+    $stmt = $conn->prepare("INSERT INTO contactos (nombre, telefono, email) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $nombre, $telefono, $email);
+    
+    if ($stmt->execute()) {
+        $_SESSION['message'] = "Contacto añadido correctamente.";
+    } else {
+        $_SESSION['message'] = "Error al añadir el contacto: " . $stmt->error;
+    }
+    
+    $stmt->close();
+    header("Location: index.php");
+    exit();
+}
 
 if (isset($_GET['eliminar'])) {
     $id = $_GET['eliminar'];
-    $sql = "DELETE FROM contactos WHERE id=$id";
-    if ($conn->query($sql) === TRUE) {
+    // Usar una sentencia preparada para eliminar
+    $stmt = $conn->prepare("DELETE FROM contactos WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    
+    if ($stmt->execute()) {
         $_SESSION['message'] = "Contacto eliminado exitosamente.";
-        header("Location: index.php");
-        exit();
     } else {
-        echo "Error al eliminar el contacto: " . $conn->error;
+        $_SESSION['message'] = "Error al eliminar el contacto: " . $stmt->error;
     }
+    
+    $stmt->close();
+    header("Location: index.php");
+    exit();
 }
-
 
 if (isset($_POST['modificar'])) {
     $id = $_POST['id'];
@@ -38,14 +52,26 @@ if (isset($_POST['modificar'])) {
     $telefono = $_POST['telefono'];
     $email = $_POST['email'];
 
-    $sql = "UPDATE contactos SET nombre='$nombre', telefono='$telefono', email='$email' WHERE id=$id";
-    if ($conn->query($sql) === TRUE) {
-        $_SESSION['message'] = "Contacto editado exitosamente.";
-        header("Location: index.php");
+    // Validar que el correo electrónico contenga '@'
+    if (strpos($email, '@') === false) {
+        $_SESSION['message'] = "El correo electrónico debe contener un '@'.";
+        header('Location: index.php');
         exit();
-    } else {
-        echo "Error al modificar el contacto: " . $conn->error;
     }
+
+    // Usar una sentencia preparada para modificar
+    $stmt = $conn->prepare("UPDATE contactos SET nombre = ?, telefono = ?, email = ? WHERE id = ?");
+    $stmt->bind_param("sssi", $nombre, $telefono, $email, $id);
+    
+    if ($stmt->execute()) {
+        $_SESSION['message'] = "Contacto editado exitosamente.";
+    } else {
+        $_SESSION['message'] = "Error al modificar el contacto: " . $stmt->error;
+    }
+    
+    $stmt->close();
+    header("Location: index.php");
+    exit();
 }
 
 $conn->close();
