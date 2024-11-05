@@ -6,16 +6,16 @@ body {
     background-size: 200% 200%;
     animation: fondoMovimiento 10s ease infinite;
     color: #E0E0E0;
-    overflow: hidden;
 }
 
+/* Animación de fondo */
 @keyframes fondoMovimiento {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
-/* Tarjeta o contenedor con efecto futurista */
+
 .contenedor {
     width: 80%;
     max-width: 600px;
@@ -39,6 +39,7 @@ h1, h2 {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 2px;
+    margin: 20px 0; 
 }
 
 p {
@@ -47,16 +48,33 @@ p {
     text-align: justify;
 }
 
-/* Botón futurista */
+
+table {
+    width: 100%;
+    border-collapse: collapse; 
+    margin-top: 20px; 
+}
+
+th, td {
+    padding: 15px; 
+    text-align: left; 
+    border-bottom: 1px solid #00FFF7; 
+}
+
+tr:hover {
+    background-color: rgba(0, 255, 247, 0.1); 
+}
+
+
 .boton {
     display: inline-block;
-    padding: 10px 30px;
-    margin: 20px auto;
+    padding: 10px 20px; 
+    margin: 10px 0; 
     color: #00FFF7;
     font-weight: bold;
     text-decoration: none;
     border: 2px solid #00FFF7;
-    border-radius: 50px;
+    border-radius: 5px; 
     background: rgba(20, 29, 38, 0.8);
     transition: background 0.3s ease, transform 0.3s ease;
 }
@@ -75,4 +93,23 @@ p {
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 20px;
+}
+#contact-form {
+    display: flex;
+    flex-direction: column; /* Alinear elementos verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+    gap: 10px; /* Espacio entre los elementos */
+}
+
+.boton {
+    display: inline-block; /* Asegura que el botón pueda ser centrado */
+    padding: 10px 30px;
+    color: #00FFF7;
+    font-weight: bold;
+    text-decoration: none;
+    border: 2px solid #00FFF7;
+    border-radius: 50px;
+    background: rgba(20, 29, 38, 0.8);
+    transition: background 0.3s ease, transform 0.3s ease;
+    margin: 0 auto; /* Asegura que el botón esté centrado en su contenedor */
 }

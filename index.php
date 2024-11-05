@@ -64,7 +64,7 @@ include 'conexion.php';
 
     <script src="script.js"></script>
     <script>
-        // Desaparecer el mensaje después de 2 segundos
+        
         setTimeout(function() {
             const alertMessage = document.getElementById('alert-message');
             if (alertMessage) {
